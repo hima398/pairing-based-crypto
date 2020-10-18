@@ -24,7 +24,7 @@ func main() {
 	m := big.NewInt(1)
 	c := paillier.Encrypt(m, &priv.PublicKey)
 
-	m2 := priv.Decrypt(c, priv)
+	m2 := priv.Decrypt(c)
 	fmt.Printf("c = %v\n", c)
 	fmt.Printf("m = %v\n", m2)
 

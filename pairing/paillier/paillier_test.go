@@ -12,7 +12,7 @@ func TestGenerateKey(t *testing.T) {
 	m := bigOne
 
 	c := Encrypt(m, &priv.PublicKey)
-	m2 := priv.Decrypt(c, priv)
+	m2 := priv.Decrypt(c)
 
 	if m.Cmp(m2) != 0 {
 		t.Errorf("actual %v\nexpected %v", m2, m)
@@ -33,7 +33,7 @@ func TestEncrypt(t *testing.T) {
 		c2 := Encrypt(m2, &key.PublicKey)
 
 		n2 := new(big.Int).Mul(key.PublicKey.N, key.PublicKey.N)
-		actual := key.Decrypt(new(big.Int).Mod(new(big.Int).Mul(c1, c2), n2), key)
+		actual := key.Decrypt(new(big.Int).Mod(new(big.Int).Mul(c1, c2), n2))
 		expected := big.NewInt(8)
 
 		if actual.Cmp(expected) != 0 {
@@ -52,14 +52,14 @@ func TestEncrypt(t *testing.T) {
 		c2 := Encrypt(m2, &key.PublicKey)
 
 		n2 := new(big.Int).Mul(key.PublicKey.N, key.PublicKey.N)
-		d1 := key.Decrypt(new(big.Int).Exp(c1, m2, n2), key)
+		d1 := key.Decrypt(new(big.Int).Exp(c1, m2, n2))
 		expected := big.NewInt(15)
 
 		if d1.Cmp(expected) != 0 {
 			t.Errorf("actual %s, expected %s", d1, expected)
 		}
 
-		d2 := key.Decrypt(new(big.Int).Exp(c2, m1, n2), key)
+		d2 := key.Decrypt(new(big.Int).Exp(c2, m1, n2))
 
 		if d2.Cmp(expected) != 0 {
 			t.Errorf("actual %s, expected %s", d2, expected)

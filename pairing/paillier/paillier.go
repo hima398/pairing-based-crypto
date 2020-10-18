@@ -133,7 +133,8 @@ func Encrypt(m *big.Int, pub *PublicKey) *big.Int {
 	return c
 }
 
-func (priv *PrivateKey) Decrypt(c *big.Int, prv *PrivateKey) *big.Int {
+//
+func (priv *PrivateKey) Decrypt(c *big.Int) *big.Int {
 
 	n2 := new(big.Int).Mul(priv.N, priv.N)
 	// 0 <= c < n ^ 2
@@ -142,7 +143,7 @@ func (priv *PrivateKey) Decrypt(c *big.Int, prv *PrivateKey) *big.Int {
 	}
 
 	// m = ( L( c ^ lambda mod n ^ 2 ) / L( g ^ lambda mod n ^ 2 ) mod n )
-	numerator := new(big.Int).Mod(L(new(big.Int).Exp(c, prv.Lambda, n2), priv.PublicKey.N), n2)
+	numerator := new(big.Int).Mod(L(new(big.Int).Exp(c, priv.Lambda, n2), priv.PublicKey.N), n2)
 	m := new(big.Int).Mod(new(big.Int).Mul(numerator, priv.Mu), priv.PublicKey.N)
 	return m
 }
